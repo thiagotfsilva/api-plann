@@ -6,7 +6,9 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "start:dev": "tsx watch src/server.ts",
-    "dev": "nodemon --exec tsx src/server.ts"
+    "dev": "nodemon --exec tsx src/server.ts",
+    "lint": "eslint \"{src,tests}/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\""
   },
   "keywords": [],
   "author": "",
@@ -17,7 +19,13 @@
   },
   "devDependencies": {
     "@types/node": "^24.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
     "tsx": "^4.20.3",
     "typescript": "^5.9.2"
   }
