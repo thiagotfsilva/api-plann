@@ -1,0 +1,34 @@
+# Funcionalidades Obrigatórias
+
+## 1. Clientes
+
+- **CRUD**: nome, e‑mail, idade, status (ativo/inativo), perfil familiar.
+
+## 2. Planejamento & Alinhamento
+
+- Registrar metas (aposentadoria, objetivos de curto/médio prazo) com valor‑alvo e data‑alvo.
+- Registrar carteira atual (classes e percentuais) e patrimônio total.
+- Cálculo automático do percentual de alinhamento:  
+  `percentual = patrimônio no plano ÷ patrimônio atual`
+- **Categorias de alinhamento:**
+  - **Verde:** > 90%
+  - **Amarelo-claro:** 90% a 70%
+  - **Amarelo-escuro:** 70% a 50%
+  - **Vermelho:** < 50%
+
+## 3. Projeção Patrimonial
+
+- Endpoint que gera projeção ano a ano até 2060, assumindo taxa real composta inserida por input (padrão: 4% a.a.).
+
+## 4. Movimentações
+
+- CRUD de eventos (tipo, valor, frequência: única/mensal/anual) que afetam a projeção.
+
+## 5. Histórico de Simulações
+
+- Salvar versão da simulação.
+- Listar e permitir visualizar gráfico novamente.
+
+## 6. Perfis de Seguro
+
+- Registrar seguros (vida, invalidez) e exibir
