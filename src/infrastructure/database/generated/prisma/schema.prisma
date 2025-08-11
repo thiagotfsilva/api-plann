@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FamilyProfile {
+  SINGLE // Pessoa solteira
+  COUPLE // Casal
+  FAMILY // Família com filhos
+  RETIRED // Aposentado
+}
+
+enum GoalType {
+  RETIREMENT // Aposentadoria
+  SHORT_TERM // Objetivo de curto prazo
+  MEDIUM_TERM // Objetivo de médio prazo
+}
+
+enum EventFrequency {
+  ONCE
+  MONTHLY
+  YEARLY
+}
+
+enum EventType {
+  INCOME // entrada
+  EXPENSE // saída
+}
+
+enum InsuranceType {
+  LIFE
+  DISABILITY
+}
+
+enum UserRole {
+  ADVISOR
+  VIEWER
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String // Hashed
+  role      UserRole @default(VIEWER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clients Client[]
+}
+
+model Client {
+  id            String        @id @default(uuid())
+  name          String
+  email         String        @unique
+  age           Int
+  status        Boolean
+  familyProfile FamilyProfile
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  goals       Goal[]
+  wallet      Wallet?
+  events      Event[]
+  simulations Simulation[]
+  insurances  Insurance[]
+
+  advisorId String?
+  advisor   User?   @relation(fields: [advisorId], references: [id])
+}
+
+// metas
+model Goal {
+  id          String   @id @default(uuid())
+  clientId    String
+  type        GoalType
+  targetValue Float
+  targetDate  DateTime
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+// Movimentações
+model Event {
+  id        String         @id @default(uuid())
+  clientId  String
+  type      EventType
+  value     Float
+  frequency EventFrequency
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+// Perfis de Seguro
+model Insurance {
+  id       String        @id @default(uuid())
+  clientId String
+  type     InsuranceType
+  value    Float
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+// Histórico de Simulações
+model Simulation {
+  id        String   @id @default(uuid())
+  clientId  String
+  createdAt DateTime @default(now())
+  dataJson  Json // gráfico de simulação salvo
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+// carteira 
+model Wallet {
+  id             String @id @default(uuid())
+  clientId       String @unique
+  totalValue     Float
+  allocationJson Json // Ex: {"renda_fixa": 30, "ações": 50, "fundos": 20}
+
+  client Client @relation(fields: [clientId], references: [id])
+}
