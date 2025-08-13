@@ -17,6 +17,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   // Limpa tabela antes de cada teste
   await prisma.client.deleteMany();
+  await prisma.user.deleteMany();
   user = await prisma.user.create({
     data: {
       name: "user test",
@@ -55,7 +56,8 @@ describe('Client Routes', () => {
   });
 
   it('should list clients', async () => {
-    await prisma.client.create({
+    console.log("user.id", user.id)
+    const client = await prisma.client.create({
       data: {
         advisorId: user.id,
         age: 30,
@@ -65,7 +67,7 @@ describe('Client Routes', () => {
         status: true,
       },
     });
-
+console.log("client", client)
     const res = await request(app.server).get('/api/v1/clients').expect(200);
 
     expect(Array.isArray(res.body)).toBe(true);

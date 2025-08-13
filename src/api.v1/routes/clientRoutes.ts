@@ -19,7 +19,7 @@ export const clientRouter = async (app: FastifyInstance) => {
     '/',
     {
       schema: {
-        response: { 200: $ref('responseClientSchema')},
+        response: { 200: $ref('listClientsResponseSchema')},
       }
     },
     clientController.listClients

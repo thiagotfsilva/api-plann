@@ -20,7 +20,10 @@ const responseUserSchema = baseUserSchema.extend({
 export type CreateUserDto = z.infer<typeof createUserSchema>;
 export type ResponseUserDto = z.infer<typeof responseUserSchema>;
 
-export const { schemas: usersSchemas, $ref } = buildJsonSchemas({
-  createUserSchema,
-  responseUserSchema,
-});
+export const { schemas: usersSchemas, $ref } = buildJsonSchemas(
+  {
+    createUserSchema,
+    responseUserSchema,
+  },
+  { $id: 'userSchema' }
+);

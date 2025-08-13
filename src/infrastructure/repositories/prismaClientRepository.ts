@@ -11,6 +11,7 @@ export class PrismaClientRepository implements ClientRepository {
         email: client.getEmail(),
         age: client.getAge(),
         status: client.getStatus(),
+        advisorId: client.getAdvisorId(),
         familyProfile: client.getFamilyProfile(),
       },
     });
@@ -32,6 +33,12 @@ export class PrismaClientRepository implements ClientRepository {
       where: { id },
       data: {
         ...clientData,
+        /* name: clientData.getName(),
+        email: clientData.getEmail(),
+        age: clientData.getAge(),
+        status: clientData.getStatus(),
+        familyProfile: clientData.getFamilyProfile(),
+        advisorId: clientData.getAdvisorId(), */
       },
     });
 
@@ -43,6 +50,7 @@ export class PrismaClientRepository implements ClientRepository {
   }
 
   private toDomain(prismaClient: any): Client {
+    console.log("prismaClient", prismaClient)
     return new Client(
       prismaClient.advisorId,
       prismaClient.name,

@@ -8,8 +8,8 @@ export class Client {
     private age: number,
     private status: boolean,
     private familyProfile: FamilyProfile,
-    private id?: string, // Adicione como opcional
-    private createdAt?: Date, // Adicione como opcional
+    private id?: string,
+    private createdAt?: Date,
     private updatedAt?: Date
   ) {}
 

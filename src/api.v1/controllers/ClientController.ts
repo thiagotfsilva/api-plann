@@ -1,4 +1,4 @@
-import { CreateClientDto, UpdateClientDto } from 'api.v1/schemas/clientSchema';
+import { CreateClientDto, ResponseClientDto, UpdateClientDto } from 'api.v1/schemas/clientSchema';
 import { makeClientServiceFactory } from 'application/client/clientFactory';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
@@ -15,6 +15,7 @@ export class ClientController {
   async listClients(_req: FastifyRequest, reply: FastifyReply) {
     const clientService = makeClientServiceFactory();
     const clients = await clientService.findAll();
+    console.log(clients)
     return reply.status(200).send(clients);
   }
 

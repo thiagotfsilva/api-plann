@@ -77,8 +77,8 @@ model Client {
   simulations    Simulation[]
   insurances     Insurance[]
 
-  advisorId String?
-  advisor   User? @relation(fields: [advisorId], references: [id])
+  advisorId String
+  advisor   User @relation(fields: [advisorId], references: [id])
 }
 
 // metas
