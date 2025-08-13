@@ -2,9 +2,9 @@ import { UserController } from 'api.v1/controllers/UserController';
 import { $ref } from 'api.v1/schemas/userSchema';
 import { UserService } from 'application/userService';
 import { FastifyInstance } from 'fastify';
-import { UserPrismaRespository } from 'infrastructure/repositories/userPrismaRepository';
+import { PrismaUserRespository } from 'infrastructure/repositories/prismaUserRepository';
 
-const userRepository = new UserPrismaRespository();
+const userRepository = new PrismaUserRespository();
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
@@ -19,4 +19,6 @@ export const userRouter = async (app: FastifyInstance) => {
     },
     userController.createUser.bind(userController) // <-- Corrigido aqui
   );
+
+  return app;
 };

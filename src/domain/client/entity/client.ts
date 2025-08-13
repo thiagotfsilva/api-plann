@@ -1,16 +1,21 @@
-import { FamilyProfile } from "../enum/familyProfile";
+import { FamilyProfile } from '../enum/familyProfile';
 
 export class Client {
   constructor(
+    private advisorId: string,
     private name: string,
     private email: string,
     private age: number,
     private status: boolean,
     private familyProfile: FamilyProfile,
-    private id?: string,         // Adicione como opcional
-    private createdAt?: Date,    // Adicione como opcional
+    private id?: string, // Adicione como opcional
+    private createdAt?: Date, // Adicione como opcional
     private updatedAt?: Date
   ) {}
+
+  getAdvisorId(): string {
+    return this.advisorId;
+  }
 
   getName(): string {
     return this.name;

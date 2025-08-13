@@ -1,4 +1,4 @@
-import { Client } from "../entity/client";
+import { Client } from '../entity/client';
 
 export interface ClientRepository {
   create(client: Client): Promise<Client>;

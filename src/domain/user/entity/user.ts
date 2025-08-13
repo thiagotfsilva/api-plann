@@ -6,9 +6,9 @@ export class User {
     private email: string,
     private password: string,
     private role: UserRole,
-    private id?: string,         // Adicione como opcional
-    private createdAt?: Date,    // Adicione como opcional
-    private updatedAt?: Date     // Adicione como opcional
+    private id?: string, // Adicione como opcional
+    private createdAt?: Date, // Adicione como opcional
+    private updatedAt?: Date // Adicione como opcional
   ) {}
 
   getName(): string {

@@ -13,8 +13,7 @@ export class UserController {
       const res = await this.userService.createUser(req.body);
       reply.status(201).send(res);
     } catch (error) {
-
-      reply.status(500).send({message: (error as Error).message});
+      reply.status(500).send({ message: (error as Error).message });
     }
   }
 }
