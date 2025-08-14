@@ -1,6 +1,6 @@
 import { User } from 'domain/user/entity/user';
 import { UserRepository } from 'domain/user/repository/userRepository';
-import { prisma } from 'infrastructure/database/prima/prisma';
+import { prisma } from 'infrastructure/database/prisma/prisma';
 import { UserRole } from 'domain/user/enums/userRole';
 
 export class PrismaUserRespository implements UserRepository {

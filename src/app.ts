@@ -6,11 +6,13 @@ import { usersSchemas } from 'api.v1/schemas/userSchema';
 import { clientRouter } from 'api.v1/routes/clientRoutes';
 import Fastify from 'fastify';
 import { clientSchemas } from 'api.v1/schemas/clientSchema';
+import { goalRouter } from 'api.v1/routes/goalRoutes';
+import { goalSchema } from 'api.v1/schemas/goalSchemas';
 
 export function buildApp() {
   const app = Fastify({ logger: true });
 
-  const allSchemas = [...usersSchemas, ...clientSchemas];
+  const allSchemas = [...usersSchemas, ...clientSchemas, ...goalSchema];
 
   for (const schema of allSchemas) {
     // Verifica se o schema tem $id antes de adicionar
@@ -29,6 +31,7 @@ export function buildApp() {
     reply.send({ message: 'hello dear!' });
   });
 
+  app.register(goalRouter, { prefix: 'api/v1/goals' });
   app.register(userRouter, { prefix: 'api/v1/users' });
   app.register(clientRouter, { prefix: 'api/v1/clients' });
 

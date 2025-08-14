@@ -15,7 +15,6 @@ export class ClientController {
   async listClients(_req: FastifyRequest, reply: FastifyReply) {
     const clientService = makeClientServiceFactory();
     const clients = await clientService.findAll();
-    console.log(clients)
     return reply.status(200).send(clients);
   }
 
@@ -47,6 +46,6 @@ export class ClientController {
     const { id } = req.params;
     const clientService = makeClientServiceFactory();
     await clientService.delete(id)
-    return reply.status(204);
+    return reply.status(204).send();
   }
 }

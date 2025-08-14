@@ -1,7 +1,7 @@
 import { Client } from 'domain/client/entity/client';
 import { FamilyProfile } from 'domain/client/enum/familyProfile';
 import { ClientRepository } from 'domain/client/repository/clientRepository';
-import { prisma } from 'infrastructure/database/prima/prisma';
+import { prisma } from 'infrastructure/database/prisma/prisma';
 
 export class PrismaClientRepository implements ClientRepository {
   async create(client: Client): Promise<Client> {
@@ -50,7 +50,6 @@ export class PrismaClientRepository implements ClientRepository {
   }
 
   private toDomain(prismaClient: any): Client {
-    console.log("prismaClient", prismaClient)
     return new Client(
       prismaClient.advisorId,
       prismaClient.name,

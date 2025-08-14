@@ -1,0 +1,5 @@
+export enum GoalType {
+  RETIREMENT = 'RETIREMENT',
+  SHORT_TERM  = 'SHORT_TERM',
+  MEDIUM_TERM = 'MEDIUM_TERM'
+}

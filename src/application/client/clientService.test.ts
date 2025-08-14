@@ -1,4 +1,3 @@
-
 import { CreateClientDto, UpdateClientDto } from 'api.v1/schemas/clientSchema';
 import { ClientService } from 'application/client/clientService';
 import { AppError } from 'commons/domain/errors/appError';
@@ -75,8 +74,28 @@ describe('ClientService', () => {
 
   describe('findAll', () => {
     it('should return all clients as response DTOs', async () => {
-      const client1 = new Client('1', 'John Doe', 'john@example.com', 30, true, FamilyProfile.SINGLE, '1', new Date(), new Date());
-      const client2 = new Client('2', 'Jane Doe', 'jane@example.com', 28, false, FamilyProfile.COUPLE, '2', new Date(), new Date());
+      const client1 = new Client(
+        '1',
+        'John Doe',
+        'john@example.com',
+        30,
+        true,
+        FamilyProfile.SINGLE,
+        '1',
+        new Date(),
+        new Date()
+      );
+      const client2 = new Client(
+        '2',
+        'Jane Doe',
+        'jane@example.com',
+        28,
+        false,
+        FamilyProfile.COUPLE,
+        '2',
+        new Date(),
+        new Date()
+      );
 
       mockRepository.findAll.mockResolvedValue([client1, client2]);
 
@@ -100,7 +119,17 @@ describe('ClientService', () => {
 
   describe('findById', () => {
     it('should return the client as response DTO if found', async () => {
-      const client = new Client('1', 'John Doe', 'john@example.com', 30, true, FamilyProfile.SINGLE, '1', new Date(), new Date());
+      const client = new Client(
+        '1',
+        'John Doe',
+        'john@example.com',
+        30,
+        true,
+        FamilyProfile.SINGLE,
+        '1',
+        new Date(),
+        new Date()
+      );
 
       mockRepository.findById.mockResolvedValue(client);
 
@@ -123,7 +152,9 @@ describe('ClientService', () => {
     it('should throw AppError if client not found', async () => {
       mockRepository.findById.mockResolvedValue(null);
 
-      await expect(service.findById('nonexistent')).rejects.toThrow(new AppError('Usuário não encontrado', 404));
+      await expect(service.findById('nonexistent')).rejects.toThrow(
+        new AppError('user not found', 404)
+      );
       expect(mockRepository.findById).toHaveBeenCalledWith('nonexistent');
     });
   });

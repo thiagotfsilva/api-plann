@@ -35,7 +35,7 @@ export class ClientService {
     const client = await this.clientRepository.findById(id);
 
     if (!client) {
-      throw new AppError('Usuário não encontrado', 404);
+      throw new AppError('user not found', 404);
     }
 
     return this.toResponseDto(client);
