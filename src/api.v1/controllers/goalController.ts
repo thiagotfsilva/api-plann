@@ -12,9 +12,10 @@ export class GoalController {
     return reply.status(201).send(goal);
   }
 
-  async listGoals(req: FastifyRequest, reply: FastifyReply) {
+  async listGoals(req: FastifyRequest<{ Params: {clientId: string } }>, reply: FastifyReply) {
+    const { clientId } = req.params;
     const goalService = makeGoalServiceFactory();
-    const goals = await goalService.findAllGoals();
+    const goals = await goalService.findAllGoals(clientId);
     return reply.status(200).send(goals);
   }
 
@@ -36,7 +37,7 @@ export class GoalController {
     const dto = req.body;
     const goalService = makeGoalServiceFactory();
     const goal = goalService.updateGoal(id, dto);
-    return reply.status(200).send();
+    return reply.status(200).send(goal);
   }
 
   async deleteGoal(

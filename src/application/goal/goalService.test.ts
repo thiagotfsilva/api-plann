@@ -4,6 +4,7 @@ import { CreateGoalDto, UpdateGoalDto } from "api.v1/schemas/goalSchemas";
 import { Goal } from "domain/goal/entity/goal";
 import { GoalType } from "domain/goal/enum/goalType";
 import { AppError } from "commons/domain/errors/appError";
+
 describe('GoalService', () => {
   let service: GoalService;
   let mockRepository: jest.Mocked<GoalRepository>;
@@ -87,7 +88,7 @@ describe('GoalService', () => {
 
       mockRepository.findAll.mockResolvedValue([goal1, goal2]);
 
-      const result = await service.findAllGoals();
+      const result = await service.findAllGoals(goal1.getClientId());
 
       expect(mockRepository.findAll).toHaveBeenCalled();
       expect(result).toHaveLength(2);

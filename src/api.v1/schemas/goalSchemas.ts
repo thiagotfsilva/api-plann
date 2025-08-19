@@ -20,6 +20,10 @@ const paramsSchema = z.object({
   id: z.string().uuid(),
 });
 
+const paramsListSchema = z.object({
+  clientId: z.string().uuid(),
+});
+
 const listGoalSchema = z.array(responseGoalSchema);
 
 const updateGoalSchema = baseGoalSchema.partial();
@@ -36,6 +40,7 @@ export const { schemas: goalSchema, $ref } = buildJsonSchemas(
     paramsSchema,
     responseGoalSchema,
     listGoalSchema,
+    paramsListSchema,
   },
   {
     $id: 'goalSchema'

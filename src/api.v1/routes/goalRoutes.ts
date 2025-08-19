@@ -17,9 +17,10 @@ export const goalRouter = async (app: FastifyInstance) => {
   );
 
   app.get(
-    '/',
+    '/client/:clientId',
     {
       schema: {
+        params: $ref('paramsListSchema'),
         response: { 200: $ref('listGoalSchema') },
       },
     },

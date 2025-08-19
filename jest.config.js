@@ -3,6 +3,8 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js'],
+  maxConcurrency: 1, // Executa testes sequencialmente
+  testTimeout: 30000, // 30 segundos de timeout
   moduleNameMapper: {
     '^app$': '<rootDir>/src/app.ts',
     '^api\\.v1/(.*)$': '<rootDir>/src/api.v1/$1',

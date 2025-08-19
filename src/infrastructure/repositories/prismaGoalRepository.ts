@@ -4,7 +4,6 @@ import { prisma } from "infrastructure/database/prisma/prisma";
 
 export class PrismaGoalRepository implements GoalRepository {
   async create(goal: Goal): Promise<Goal> {
-    console.log('Creating goal in Prisma repository:', goal);
     const goalCreate = await prisma.goal.create({
       data: {
         clientId: goal.getClientId(),
@@ -22,8 +21,8 @@ export class PrismaGoalRepository implements GoalRepository {
     return goal ? this.toDomain(goal) : null;
   }
 
-  async findAll(): Promise<Goal[]> {
-    const goals = await prisma.goal.findMany();
+  async findAll(clientId: string): Promise<Goal[]> {
+    const goals = await prisma.goal.findMany({ where: { clientId } });
     return goals.map((goal) => this.toDomain(goal));
   }
 

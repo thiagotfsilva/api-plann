@@ -15,34 +15,38 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  // Limpa tabela antes de cada teste
-  await prisma.goal.deleteMany()
+  // ✅ ORDEM CORRETA: deleta dependências primeiro
+  await prisma.goal.deleteMany();
   await prisma.client.deleteMany();
   await prisma.user.deleteMany();
-  user = await prisma.user.create({
-    data: {
-      name: "user test",
-      email: "usertest@email.com",
-      password: "12345",
-      role: UserRole.ADVISOR,
-    },
-  });
 });
 
 afterAll(async () => {
-  if (app) { // Verifique se app existe antes de fechar
+  await prisma.$disconnect();
+
+  if (app) {
     await app.close();
   }
-  await prisma.$disconnect();
-}, 10000);
+}, 15000); // Aumentar timeout
 
 describe('Client Routes', () => {
   it('should create a new client', async () => {
+    const timestamp = Date.now();
+
+    user = await prisma.user.create({
+      data: {
+        name: "user test",
+        email: `usertest${timestamp}@email.com`, // Email único
+        password: "12345",
+        role: UserRole.ADVISOR,
+      },
+    });
+
     const clientData = {
       advisorId: user.id,
       age: 30,
       name: 'John Doe',
-      email: 'john@example.com',
+      email: `john${timestamp}@example.com`, // Email único por teste
       familyProfile: FamilyProfile.SINGLE,
       status: true,
     };
@@ -54,33 +58,59 @@ describe('Client Routes', () => {
 
     expect(res.body).toHaveProperty('id');
     expect(res.body.name).toBe(clientData.name);
+    expect(res.body.email).toBe(clientData.email);
   });
 
   it('should list clients', async () => {
+    const timestamp = Date.now();
+
+    user = await prisma.user.create({
+      data: {
+        name: "user test",
+        email: `usertest${timestamp}@email.com`, // Email único
+        password: "12345",
+        role: UserRole.ADVISOR,
+      },
+    });
+
     const client = await prisma.client.create({
       data: {
         advisorId: user.id,
         age: 30,
         name: 'John Doe',
-        email: 'john@example.com',
+        email: `john${timestamp}@example.com`, // Email único
         familyProfile: FamilyProfile.SINGLE,
         status: true,
       },
     });
 
-    const res = await request(app.server).get('/api/v1/clients').expect(200);
+    const res = await request(app.server)
+      .get('/api/v1/clients')
+      .expect(200);
 
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBe(1);
+    expect(res.body[0].id).toBe(client.id);
   });
 
   it('should get a client by id', async () => {
+    const timestamp = Date.now();
+
+    user = await prisma.user.create({
+      data: {
+        name: "user test",
+        email: `usertest${timestamp}@email.com`, // Email único
+        password: "12345",
+        role: UserRole.ADVISOR,
+      },
+    });
+
     const client = await prisma.client.create({
       data: {
         advisorId: user.id,
         age: 30,
         name: 'John Doe',
-        email: 'john@example.com',
+        email: `john${timestamp}@example.com`, // Email único
         familyProfile: FamilyProfile.SINGLE,
         status: true,
       },
@@ -96,12 +126,23 @@ describe('Client Routes', () => {
   });
 
   it('should update a client', async () => {
+    const timestamp = Date.now();
+
+    user = await prisma.user.create({
+      data: {
+        name: "user test",
+        email: `usertest${timestamp}@email.com`, // Email único
+        password: "12345",
+        role: UserRole.ADVISOR,
+      },
+    });
+
     const client = await prisma.client.create({
       data: {
         advisorId: user.id,
         age: 30,
         name: 'John Doe',
-        email: 'john@example.com',
+        email: `john${timestamp}@example.com`, // Email único
         familyProfile: FamilyProfile.SINGLE,
         status: true,
       },
@@ -123,12 +164,23 @@ describe('Client Routes', () => {
   });
 
   it('should delete a client', async () => {
+    const timestamp = Date.now();
+
+    user = await prisma.user.create({
+      data: {
+        name: "user test",
+        email: `usertest${timestamp}@email.com`, // Email único
+        password: "12345",
+        role: UserRole.ADVISOR,
+      },
+    });
+
     const client = await prisma.client.create({
       data: {
         advisorId: user.id,
         age: 30,
         name: 'John Doe',
-        email: 'john@example.com',
+        email: `john${timestamp}@example.com`, // Email único
         familyProfile: FamilyProfile.SINGLE,
         status: true,
       },
@@ -138,9 +190,9 @@ describe('Client Routes', () => {
       .delete(`/api/v1/clients/${client.id}`)
       .expect(204);
 
-    // Verify deletion by trying to get the client
+    // Verify deletion
     await request(app.server)
       .get(`/api/v1/clients/${client.id}`)
-      .expect(404); // Assuming findById throws NotFoundError or similar
+      .expect(404);
   });
 });

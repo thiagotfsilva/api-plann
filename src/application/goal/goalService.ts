@@ -35,8 +35,8 @@ export class GoalService {
     return this.toResponseDto(goal);
   }
 
-  async findAllGoals(): Promise<ResponseGoalDto[]> {
-    const goals = await this.goalRepository.findAll();
+  async findAllGoals(clientId: string): Promise<ResponseGoalDto[]> {
+    const goals = await this.goalRepository.findAll(clientId);
     return goals.map((goal) => this.toResponseDto(goal));
   }
 

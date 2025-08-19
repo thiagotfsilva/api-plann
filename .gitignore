@@ -30,4 +30,4 @@ Thumbs.db
 
 # Prisma
 prisma/migrations/
-/src/generated/prisma
+/src/infrastructure/database/generated/prisma
