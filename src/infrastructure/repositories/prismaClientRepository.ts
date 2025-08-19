@@ -33,16 +33,10 @@ export class PrismaClientRepository implements ClientRepository {
       where: { id },
       data: {
         ...clientData,
-        /* name: clientData.getName(),
-        email: clientData.getEmail(),
-        age: clientData.getAge(),
-        status: clientData.getStatus(),
-        familyProfile: clientData.getFamilyProfile(),
-        advisorId: clientData.getAdvisorId(), */
       },
     });
 
-    return updatedClient ? this.toDomain(updatedClient) : null;
+    return this.toDomain(updatedClient);
   }
 
   async delete(id: string): Promise<void> {

@@ -36,7 +36,7 @@ export class GoalController {
     const { id } = req.params;
     const dto = req.body;
     const goalService = makeGoalServiceFactory();
-    const goal = goalService.updateGoal(id, dto);
+    const goal = await goalService.updateGoal(id, dto);
     return reply.status(200).send(goal);
   }
 
