@@ -1,0 +1,59 @@
+import InsuranceRepository from "domain/insurance/repository/insuranceRepository";
+import InsuranceService from "./insuranceService"
+import { CreateInsuranceDto } from "api.v1/schemas/insuranceSchema";
+import InsuranceType from "domain/insurance/enum/insureanceType";
+import Insurance from "domain/insurance/entity/insurance";
+
+describe('InsuranceService', () => {
+  let service: InsuranceService;
+  let mockRepository: jest.Mocked<InsuranceRepository>;
+
+  beforeEach(() => {
+    mockRepository = {
+      create: jest.fn(),
+      findById: jest.fn(),
+      findAll: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+    } as jest.Mocked<InsuranceRepository>;
+
+    service =  new InsuranceService(mockRepository);
+  });
+
+  describe('createInsurance', () => {
+    it('Should create a insurance and return the response DTO', async () => {
+      const createDto: CreateInsuranceDto = {
+        clientId: '1',
+        type: InsuranceType.DISABILITY,
+        value: 200000,
+      };
+
+      const insuranceCreated = new Insurance(
+        createDto.clientId,
+        createDto.type as InsuranceType,
+        createDto.value,
+        '1',
+      );
+
+      mockRepository.create.mockResolvedValue(insuranceCreated);
+
+      const result = await service.createInsurance(createDto);
+
+      expect(mockRepository.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clientId: createDto.clientId,
+          type: createDto.type,
+          value: createDto.value,
+        })
+      );
+
+      expect(result).toEqual({
+        id: '1',
+        clientId: '1',
+        type: InsuranceType.DISABILITY,
+        value: 200000,
+      })
+    });
+  });
+
+});

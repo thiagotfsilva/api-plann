@@ -131,8 +131,6 @@ describe('Goal Routes', () => {
       .send(updateData)
       .expect(200);
 
-    console.log(res.body)
-
     expect(res.body.targetValue).toBe(updateData.targetValue);
   });
 

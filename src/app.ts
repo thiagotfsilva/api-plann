@@ -8,11 +8,17 @@ import Fastify from 'fastify';
 import { clientSchemas } from 'api.v1/schemas/clientSchema';
 import { goalRouter } from 'api.v1/routes/goalRoutes';
 import { goalSchema } from 'api.v1/schemas/goalSchemas';
+import { insuranceSchema } from 'api.v1/schemas/insuranceSchema';
 
 export function buildApp() {
   const app = Fastify({ logger: true });
 
-  const allSchemas = [...usersSchemas, ...clientSchemas, ...goalSchema];
+  const allSchemas = [
+    ...usersSchemas,
+    ...clientSchemas,
+    ...goalSchema,
+    ...insuranceSchema,
+  ];
 
   for (const schema of allSchemas) {
     // Verifica se o schema tem $id antes de adicionar
@@ -38,13 +44,19 @@ export function buildApp() {
   app.setErrorHandler((error, _request, reply) => {
     app.log.error(error);
 
-    if (error instanceof Fastify.errorCodes.FST_ERR_NOT_FOUND || error.statusCode === 404) {
+    if (
+      error instanceof Fastify.errorCodes.FST_ERR_NOT_FOUND ||
+      error.statusCode === 404
+    ) {
       return reply.code(404).send({
         message: error.message,
       });
     }
 
-    if (error instanceof Fastify.errorCodes.FST_ERR_VALIDATION || error.statusCode === 400) {
+    if (
+      error instanceof Fastify.errorCodes.FST_ERR_VALIDATION ||
+      error.statusCode === 400
+    ) {
       return reply.code(400).send({
         message: error.message,
       });

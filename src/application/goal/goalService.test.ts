@@ -36,8 +36,6 @@ describe('GoalService', () => {
         createDto.targetValue,
         createDto.targetDate,
         '1',
-        /* new Date(),
-        new Date() */
       );
 
       mockRepository.create.mockResolvedValue(createdGoal);
@@ -59,8 +57,6 @@ describe('GoalService', () => {
         type: GoalType.MEDIUM_TERM,
         targetValue: 500000,
         targetDate: expect.any(Date),
-        /* createdAt: expect.any(Date),
-        updatedAt: expect.any(Date), */
       });
     });
   });
@@ -73,8 +69,6 @@ describe('GoalService', () => {
         100000,
         new Date(),
         '1',
-        /* new Date(),
-        new Date() */
       );
       const goal2 = new Goal(
         '2',
@@ -82,8 +76,6 @@ describe('GoalService', () => {
         1000000,
         new Date(),
         '2',
-        /* new Date(),
-        new Date() */
       );
 
       mockRepository.findAll.mockResolvedValue([goal1, goal2]);
@@ -98,8 +90,6 @@ describe('GoalService', () => {
         type: GoalType.SHORT_TERM,
         targetValue: 100000,
         targetDate: expect.any(Date),
-        /* createdAt: expect.any(Date),
-        updatedAt: expect.any(Date), */
       });
     });
   });
@@ -112,8 +102,6 @@ describe('GoalService', () => {
         500000,
         new Date(),
         '1',
-        /* new Date(),
-        new Date() */
       );
 
       mockRepository.findById.mockResolvedValue(goal);
@@ -127,8 +115,6 @@ describe('GoalService', () => {
         type: GoalType.MEDIUM_TERM,
         targetValue: 500000,
         targetDate: expect.any(Date),
-        /* createdAt: expect.any(Date),
-        updatedAt: expect.any(Date), */
       });
     });
 
@@ -157,8 +143,6 @@ describe('GoalService', () => {
         updateDto.targetValue!,
         updateDto.targetDate!,
         '1',
-        /* new Date(),
-        new Date() */
       );
 
       mockRepository.update.mockResolvedValue(updatedGoal);
@@ -180,8 +164,6 @@ describe('GoalService', () => {
         type: GoalType.RETIREMENT,
         targetValue: 750000,
         targetDate: expect.any(Date),
-        /* createdAt: expect.any(Date),
-        updatedAt: expect.any(Date), */
       });
     });
   });

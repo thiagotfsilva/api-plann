@@ -153,7 +153,7 @@ describe('ClientService', () => {
       mockRepository.findById.mockResolvedValue(null);
 
       await expect(service.findById('nonexistent')).rejects.toThrow(
-        new AppError('user not found', 404)
+        new AppError('client not found', 404)
       );
       expect(mockRepository.findById).toHaveBeenCalledWith('nonexistent');
     });

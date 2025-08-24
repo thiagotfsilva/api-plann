@@ -19,9 +19,9 @@ export class PrismaUserRespository implements UserRepository {
       userCreated.email,
       userCreated.password,
       userCreated.role as UserRole,
-      userCreated.id, // Passe o id
-      userCreated.createdAt, // Passe createdAt
-      userCreated.updatedAt // Passe updatedAt
+      userCreated.id,
+      userCreated.createdAt,
+      userCreated.updatedAt,
     );
   }
 }

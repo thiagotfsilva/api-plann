@@ -48,8 +48,6 @@ export class PrismaGoalRepository implements GoalRepository {
         prismaGoal.targetValue,
         prismaGoal.targetDate,
         prismaGoal.id,
-        /* prismaGoal.createdAt,
-        prismaGoal.updatedAt */
       );
     }
 
