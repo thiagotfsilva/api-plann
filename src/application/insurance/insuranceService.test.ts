@@ -1,6 +1,9 @@
 import InsuranceRepository from 'domain/insurance/repository/insuranceRepository';
 import InsuranceService from './insuranceService';
-import { CreateInsuranceDto } from 'api.v1/schemas/insuranceSchema';
+import {
+  CreateInsuranceDto,
+  UpdateInsuranceDto,
+} from 'api.v1/schemas/insuranceSchema';
 import InsuranceType from 'domain/insurance/enum/insureanceType';
 import Insurance from 'domain/insurance/entity/insurance';
 import { AppError } from 'commons/domain/errors/appError';
@@ -96,9 +99,8 @@ describe('InsuranceService', () => {
         clientId: '1',
         type: InsuranceType.LIFE,
         value: 3000,
-      })
+      });
     });
-
 
     it('should throw AppErro if insurance not found', async () => {
       mockRepository.findById.mockResolvedValue(null);
@@ -107,7 +109,53 @@ describe('InsuranceService', () => {
         new AppError('insurance not found', 404)
       );
       expect(mockRepository.findById).toHaveBeenCalledWith('nonexistent');
-    })
-  })
+    });
+  });
 
+  describe('update', () => {
+    it('should update the insurance and return the response DTO', async () => {
+      const updateInsuranceDto: UpdateInsuranceDto = {
+        clientId: '1',
+        type: InsuranceType.DISABILITY,
+        value: 30000,
+      };
+
+      const updateInsurance = new Insurance(
+        updateInsuranceDto.clientId!,
+        updateInsuranceDto.type as InsuranceType,
+        updateInsuranceDto.value!,
+        '1',
+      );
+
+      mockRepository.update.mockResolvedValue(updateInsurance);
+
+      const result = await service.updateInsurance('1', updateInsuranceDto);
+
+      expect(mockRepository.update).toHaveBeenCalledWith(
+        '1',
+        expect.objectContaining({
+          clientId: updateInsuranceDto.clientId,
+          type: updateInsuranceDto.type,
+          value: updateInsuranceDto.value,
+        })
+      );
+
+      expect(result).toEqual({
+        id: '1',
+        clientId: '1',
+        type: InsuranceType.DISABILITY,
+        value: 30000,
+      });
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete the goal', async () => {
+      mockRepository.delete.mockResolvedValue(undefined);
+
+      await service.deleteInsurance('1');
+
+      expect(mockRepository.delete).toHaveBeenCalledWith('1');
+    });
+  });
 });
