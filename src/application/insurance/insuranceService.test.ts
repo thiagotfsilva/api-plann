@@ -1,8 +1,9 @@
-import InsuranceRepository from "domain/insurance/repository/insuranceRepository";
-import InsuranceService from "./insuranceService"
-import { CreateInsuranceDto } from "api.v1/schemas/insuranceSchema";
-import InsuranceType from "domain/insurance/enum/insureanceType";
-import Insurance from "domain/insurance/entity/insurance";
+import InsuranceRepository from 'domain/insurance/repository/insuranceRepository';
+import InsuranceService from './insuranceService';
+import { CreateInsuranceDto } from 'api.v1/schemas/insuranceSchema';
+import InsuranceType from 'domain/insurance/enum/insureanceType';
+import Insurance from 'domain/insurance/entity/insurance';
+import { AppError } from 'commons/domain/errors/appError';
 
 describe('InsuranceService', () => {
   let service: InsuranceService;
@@ -17,7 +18,7 @@ describe('InsuranceService', () => {
       delete: jest.fn(),
     } as jest.Mocked<InsuranceRepository>;
 
-    service =  new InsuranceService(mockRepository);
+    service = new InsuranceService(mockRepository);
   });
 
   describe('createInsurance', () => {
@@ -32,7 +33,7 @@ describe('InsuranceService', () => {
         createDto.clientId,
         createDto.type as InsuranceType,
         createDto.value,
-        '1',
+        '1'
       );
 
       mockRepository.create.mockResolvedValue(insuranceCreated);
@@ -52,8 +53,61 @@ describe('InsuranceService', () => {
         clientId: '1',
         type: InsuranceType.DISABILITY,
         value: 200000,
-      })
+      });
     });
   });
+
+  describe('findAll', () => {
+    it('should return all insurance as response DTO', async () => {
+      const insurance = new Insurance('1', InsuranceType.LIFE, 3000, '1');
+      const insurance2 = new Insurance(
+        '2',
+        InsuranceType.DISABILITY,
+        3000,
+        '2'
+      );
+
+      mockRepository.findAll.mockResolvedValue([insurance, insurance2]);
+
+      const result = await service.findAllInsurances(insurance.getClientId());
+
+      expect(mockRepository.findAll).toHaveBeenCalled();
+      expect(result).toHaveLength(2);
+      expect(result[0]).toEqual({
+        id: '1',
+        clientId: '1',
+        type: InsuranceType.LIFE,
+        value: 3000,
+      });
+    });
+  });
+
+  describe('findById', () => {
+    it('should return the insurance as respose DTO if found', async () => {
+      const insurance = new Insurance('1', InsuranceType.LIFE, 3000, '1');
+
+      mockRepository.findById.mockResolvedValue(insurance);
+
+      const result = await service.findByIdInsurance('1');
+
+      expect(mockRepository.findById).toHaveBeenCalledWith('1');
+      expect(result).toEqual({
+        id: '1',
+        clientId: '1',
+        type: InsuranceType.LIFE,
+        value: 3000,
+      })
+    });
+
+
+    it('should throw AppErro if insurance not found', async () => {
+      mockRepository.findById.mockResolvedValue(null);
+
+      await expect(service.findByIdInsurance('nonexistent')).rejects.toThrow(
+        new AppError('insurance not found', 404)
+      );
+      expect(mockRepository.findById).toHaveBeenCalledWith('nonexistent');
+    })
+  })
 
 });
